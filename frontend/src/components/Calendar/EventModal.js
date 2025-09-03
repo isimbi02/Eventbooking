@@ -1,16 +1,40 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Users, Clock } from 'lucide-react';
-import './Calendar.css';
+import { 
+  X, 
+  Calendar, 
+  MapPin, 
+  Users, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle,
+  User,
+  FileText
+} from 'lucide-react';
 
-const EventModal = ({ event, onClose, onBookEvent, isBooking, user }) => {
+const EventModal = ({ event, onClose, onBookEvent, isBooking, user, isBooked, isFull }) => {
   const handleBook = () => {
     onBookEvent(event.id);
   };
 
-  const isBooked = event.isBooked || event.attendees?.some(attendee => attendee.id === user?.id);
-  const isFull = event.attendeeCount >= event.capacity;
-//   const canBook = !isBooked && !isFull && user;
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }),
+      time: date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      })
+    };
+  };
+
+  const { date, time } = formatDate(event.date);
 
   return (
     <AnimatePresence>
@@ -22,59 +46,110 @@ const EventModal = ({ event, onClose, onBookEvent, isBooking, user }) => {
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
           className="modal-content"
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Header */}
           <div className="modal-header">
-            <h2>{event.title}</h2>
-            <button onClick={onClose} className="close-btn">
+            <div className="header-content">
+              <h2>{event.title}</h2>
+              {isBooked && (
+                <div className="booking-badge">
+                  <CheckCircle size={14} />
+                  <span>Already Booked</span>
+                </div>
+              )}
+              {isFull && !isBooked && (
+                <div className="booking-badge full-badge">
+                  <AlertCircle size={14} />
+                  <span>Event Full</span>
+                </div>
+              )}
+            </div>
+            <button onClick={onClose} className="close-btn" aria-label="Close modal">
               <X size={20} />
             </button>
           </div>
 
+          {/* Body */}
           <div className="modal-body">
+            {/* Event Details */}
             <div className="event-details">
               <div className="detail-item">
                 <Calendar size={18} />
-                <span>{new Date(event.date).toLocaleDateString()}</span>
+                <div>
+                  <div className="detail-label">Date</div>
+                  <div className="detail-value">{date}</div>
+                </div>
               </div>
+              
               <div className="detail-item">
                 <Clock size={18} />
-                <span>{new Date(event.date).toLocaleTimeString()}</span>
+                <div>
+                  <div className="detail-label">Time</div>
+                  <div className="detail-value">{time}</div>
+                </div>
               </div>
+              
               <div className="detail-item">
                 <MapPin size={18} />
-                <span>{event.location}</span>
+                <div>
+                  <div className="detail-label">Location</div>
+                  <div className="detail-value">{event.location}</div>
+                </div>
               </div>
+              
               <div className="detail-item">
                 <Users size={18} />
-                <span>{event.attendeeCount} / {event.capacity} attendees</span>
+                <div>
+                  <div className="detail-label">Attendance</div>
+                  <div className="detail-value">
+                    {event.attendeeCount} / {event.capacity} attendees
+                    {isFull && (
+                      <span className="capacity-warning"> • Full</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Description */}
             <div className="event-description">
-              <h4>Description</h4>
+              <h4>
+                <FileText size={18} />
+                Description
+              </h4>
               <p>{event.description}</p>
             </div>
 
+            {/* Organizer */}
             <div className="event-organizer">
-              <h4>Organizer</h4>
-              <p>{event.organizer?.name}</p>
+              <h4>
+                <User size={18} />
+                Organizer
+              </h4>
+              <p>{event.organizer?.name || 'Unknown Organizer'}</p>
             </div>
           </div>
 
+          {/* Footer */}
           <div className="modal-footer">
             {!user ? (
-              <p className="login-prompt">Please log in to book this event</p>
+              <div className="login-prompt">
+                Please log in to book events
+              </div>
             ) : isBooked ? (
               <button className="btn booked" disabled>
+                <CheckCircle size={16} />
                 Already Booked
               </button>
             ) : isFull ? (
               <button className="btn full" disabled>
+                <AlertCircle size={16} />
                 Event Full
               </button>
             ) : (
@@ -83,7 +158,17 @@ const EventModal = ({ event, onClose, onBookEvent, isBooking, user }) => {
                 onClick={handleBook}
                 disabled={isBooking}
               >
-                {isBooking ? 'Booking...' : 'Book Event'}
+                {isBooking ? (
+                  <>
+                    <span className="loading-spinner"></span>
+                    Booking...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle size={16} />
+                    Book Event
+                  </>
+                )}
               </button>
             )}
           </div>

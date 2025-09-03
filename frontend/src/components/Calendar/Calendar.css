@@ -1,24 +1,80 @@
+/* Calendar Container */
 .calendar-container {
   background: var(--surface);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: var(--shadow);
+  min-height: 80vh;
 }
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 2rem;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
-.calendar-header h1 {
+.calendar-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.calendar-title-section h1 {
   color: var(--text-primary);
   font-size: 2rem;
   font-weight: 700;
+  margin: 0;
 }
 
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-button {
+  background: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background: var(--primary-light);
+  color: white;
+}
+
+.today-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.today-button:hover {
+  background: var(--primary-dark);
+}
+
+.current-month {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: 1rem;
+}
+
+/* Filter Bar Styles */
 .filter-bar {
   margin-bottom: 2rem;
 }
@@ -26,11 +82,30 @@
 .search-container {
   display: flex;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
   background: var(--surface);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.search-icon {
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
 }
 
 .search-input {
@@ -40,6 +115,318 @@
   padding: 0.5rem;
   font-size: 1rem;
   background: transparent;
+  color: var(--text-primary);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--background);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.filter-toggle:hover {
+  border-color: var(--primary-color);
+}
+
+.filter-toggle.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.filter-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  background: var(--error);
+  border-radius: 50%;
+}
+
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--error);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+  background: #d32f2f;
+}
+
+/* Filters Panel */
+.filters-panel {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.category-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  background: var(--background);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.category-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.category-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.filter-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.date-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.date-input-group label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Calendar Content */
+.calendar-content {
+  position: relative;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .calendar-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .date-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 1rem;
+  }
+  
+  .search-container {
+    flex-direction: column;
+  }
+  
+  .filter-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .calendar-navigation {
+    justify-content: center;
+  }
+  
+  .current-month {
+    display: none;
+  }
+}
+
+/* Calendar Event Styles */
+.rbc-event {
+  padding: 2px 4px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.rbc-event:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Custom scrollbar for filters panel */
+.filters-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filters-panel::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.filters-panel::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.filters-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Custom Event Styles */
+.custom-event {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 2px 4px;
+  font-size: 12px;
+  color: white;
+}
+
+/* Booking Badge */
+.booking-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #4caf50;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Modal Status Styles */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  gap: 1rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  flex: 1;
+}
+
+/* Event Status Indicators */
+.btn.booked {
+  background: #4caf50;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn.full {
+  background: #f44336;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Event capacity warning */
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+/* Calendar event styles for different states */
+.rbc-event {
+  transition: all 0.2s ease;
+}
+
+.rbc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure events are visible even when booked */
+.rbc-event-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Modal Styles */
@@ -49,52 +436,413 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 20px;
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: 16px;
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  transform-origin: center;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 1.5rem;
   border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+  color: white;
+  position: relative;
+}
+
+.modal-header h2 {
+  margin: 0;
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  padding-right: 2rem;
 }
 
 .close-btn {
-  background: none;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
+  color: white;
+  transition: all 0.2s ease;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
 }
 
 .modal-body {
   padding: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .detail-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.detail-item svg {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.event-description,
+.event-organizer {
+  margin-bottom: 1.5rem;
+}
+
+.event-description h4,
+.event-organizer h4 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-description h4::before {
+  content: "📋";
+}
+
+.event-organizer h4::before {
+  content: "👤";
+}
+
+.event-description p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--background);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.event-organizer p {
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 0.5rem;
+  background: var(--background);
+  border-radius: 6px;
+  margin: 0;
 }
 
 .modal-footer {
   padding: 1.5rem;
   border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-prompt {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 6px;
+  margin: 0;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn.booked {
+  background: var(--success);
+  color: white;
+}
+
+.btn.booked:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn.full {
+  background: var(--error);
+  color: white;
+}
+
+.btn.full:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+/* Booking Badge */
+.booking-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Capacity Warning */
+.detail-item {
+  position: relative;
+}
+
+/* Scrollbar for modal body */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .modal-content {
+    max-width: 100%;
+    margin: 10px;
+    border-radius: 12px;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.3rem;
+    padding-right: 2.5rem;
+  }
+  
+  .close-btn {
+    top: 0.8rem;
+    right: 0.8rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .event-details {
+    padding: 0.8rem;
+  }
+  
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .detail-item {
+    font-size: 0.9rem;
+  }
+  
+  .event-description h4,
+  .event-organizer h4 {
+    font-size: 1rem;
+  }
+  
+  .booking-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+/* Animation for modal content */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Loading state for booking button */
+.btn:disabled {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Enhanced Modal Styles */
+.header-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.full-badge {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: rgba(244, 67, 54, 0.5);
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.capacity-warning {
+  color: var(--error);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Event category badge */
+.event-category {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }

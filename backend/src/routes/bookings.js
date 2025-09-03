@@ -70,11 +70,11 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ message: 'You have already booked this event' });
     }
     
-    // Check if event has available capacity
-    const attendeeCount = await Booking.countByEvent(parseInt(eventId));
-    
-    if (attendeeCount >= event.capacity) {
-      return res.status(400).json({ message: 'Event is fully booked' });
+    // Check if event has available capacity - USE event.attendeeCount
+    if (event.attendeeCount >= event.capacity) {
+      return res.status(400).json({ 
+        message: `Event is fully booked. ${event.attendeeCount}/${event.capacity} spots taken.` 
+      });
     }
     
     // Create booking

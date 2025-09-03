@@ -1,11 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const Booking = {
+
   // Create new booking
+const Booking = {
+  // Create new booking - FIXED VERSION
   async create(bookingData) {
     return await prisma.booking.create({
-      data: bookingData,
+      data: {
+        ...bookingData,
+        status: 'CONFIRMED' 
+      },
       include: {
         event: {
           include: {
@@ -28,6 +33,9 @@ const Booking = {
       }
     });
   },
+
+
+
 
   // Find booking by event and user
   async findByEventAndUser(eventId, userId) {

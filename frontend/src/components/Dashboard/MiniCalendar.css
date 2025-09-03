@@ -1,0 +1,172 @@
+/* MiniCalendar.css */
+.mini-calendar {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem;
+  max-width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+.mini-calendar .calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mini-calendar .nav-button {
+  background: #f5f7f9;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #3a7bd5;
+}
+
+.mini-calendar .nav-button:hover {
+  background: #e8edf2;
+  transform: scale(1.05);
+}
+
+.mini-calendar .calendar-title h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.mini-calendar .today-button {
+  background: #3a7bd5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+.mini-calendar .today-button:hover {
+  background: #2c66b2;
+  transform: translateY(-1px);
+}
+
+.mini-calendar .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 1.2rem;
+}
+
+.mini-calendar .day-header {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  padding: 0.5rem 0;
+}
+
+.mini-calendar .calendar-day {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  color: #2c3e50;
+}
+
+.mini-calendar .calendar-day:hover:not(.empty) {
+  background: #f0f7ff;
+  color: #3a7bd5;
+}
+
+.mini-calendar .calendar-day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.mini-calendar .calendar-day.has-booking::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background: #3a7bd5;
+  border-radius: 50%;
+}
+
+.mini-calendar .calendar-legend {
+  border-top: 1px solid #eaeff2;
+  padding-top: 1rem;
+}
+
+.mini-calendar .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mini-calendar .legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.mini-calendar .booking-dot {
+  background: #3a7bd5;
+}
+
+.mini-calendar .legend-item span {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+/* Highlight current day */
+.mini-calendar .calendar-day.current-day {
+  background: #3a7bd5;
+  color: white;
+  font-weight: 600;
+}
+
+.mini-calendar .calendar-day.current-day.has-booking::after {
+  background: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mini-calendar {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .mini-calendar .calendar-day {
+    height: 32px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Animation for month transitions */
+@keyframes fadeIn {
+  from { opacity: 0.6; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mini-calendar .calendar-grid {
+  animation: fadeIn 0.3s ease;
+}

@@ -25,7 +25,7 @@ const Event = {
       ];
     }
     
-    return await prisma.event.findMany({
+    const events = await prisma.event.findMany({
       where,
       include: {
         organizer: {
@@ -48,11 +48,17 @@ const Event = {
         date: 'asc'
       }
     });
+
+    // ADD THIS: Add attendeeCount to each event
+    return events.map(event => ({
+      ...event,
+      attendeeCount: event.bookings.length // Count confirmed bookings
+    }));
   },
 
   // Find event by ID
   async findById(id) {
-    return await prisma.event.findUnique({
+    const event = await prisma.event.findUnique({
       where: { id: parseInt(id) },
       include: {
         organizer: {
@@ -78,11 +84,19 @@ const Event = {
         }
       }
     });
+
+    if (!event) return null;
+
+    // ADD THIS: Add attendeeCount to the event
+    return {
+      ...event,
+      attendeeCount: event.bookings.length // Count confirmed bookings
+    };
   },
 
   // Create new event
   async create(eventData) {
-    return await prisma.event.create({
+    const event = await prisma.event.create({
       data: eventData,
       include: {
         organizer: {
@@ -91,14 +105,28 @@ const Event = {
             name: true,
             email: true
           }
+        },
+        bookings: {
+          where: {
+            status: 'CONFIRMED'
+          },
+          select: {
+            id: true
+          }
         }
       }
     });
+
+    // ADD THIS: Add attendeeCount to the new event
+    return {
+      ...event,
+      attendeeCount: event.bookings.length
+    };
   },
 
   // Update event
   async update(id, eventData) {
-    return await prisma.event.update({
+    const event = await prisma.event.update({
       where: { id: parseInt(id) },
       data: eventData,
       include: {
@@ -108,9 +136,23 @@ const Event = {
             name: true,
             email: true
           }
+        },
+        bookings: {
+          where: {
+            status: 'CONFIRMED'
+          },
+          select: {
+            id: true
+          }
         }
       }
     });
+
+    // ADD THIS: Add attendeeCount to the updated event
+    return {
+      ...event,
+      attendeeCount: event.bookings.length
+    };
   },
 
   // Count attendees for an event

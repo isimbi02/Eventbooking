@@ -242,4 +242,55 @@ router.patch('/:id', [
   }
 });
 
+/**
+ * @swagger
+ * /api/events/{id}/capacity-test:
+ *   get:
+ *     summary: Test event capacity calculation
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Event capacity test results
+ *       404:
+ *         description: Event not found
+ */
+router.get('/:id/capacity-test', async (req, res) => {
+  try {
+    const eventId = parseInt(req.params.id);
+    
+    // Get event through model
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    
+    // Direct database count
+    const directCount = await prisma.booking.count({
+      where: {
+        eventId: eventId,
+        status: 'CONFIRMED'
+      }
+    });
+    
+    res.json({
+      eventId: event.id,
+      eventTitle: event.title,
+      eventCapacity: event.capacity,
+      modelAttendeeCount: event.attendeeCount,
+      directDBCount: directCount,
+      matches: event.attendeeCount === directCount,
+      isFull: event.attendeeCount >= event.capacity
+    });
+  } catch (error) {
+    console.error('Capacity test error:', error);
+    res.status(500).json({ message: 'Server error testing capacity' });
+  }
+});
+
 module.exports = router;
