@@ -22,15 +22,15 @@ const prisma = new PrismaClient();
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-  javascriptcors: {
-  origin: [
-    "http://localhost:3000", // Local development
-    "https://eventbooking-one.vercel.app", // Main Vercel domain
-    "https://eventbooking-a8j5fzmmk-deborah-rutagengwas-projects.vercel.app" // Current preview URL
-  ],
-  methods: ["GET", "POST", "PATCH", "DELETE"],
-  credentials: true // Add this if you're using cookies/sessions
-}
+  cors: {  // Fixed: was "javascriptcors"
+    origin: [
+      "http://localhost:3000",
+      "https://eventbooking-one.vercel.app",
+      "https://eventbooking-a8j5fzmmk-deborah-rutagengwas-projects.vercel.app"
+    ],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true
+  }
 });
 
 // Store io instance in app for use in routes
@@ -38,7 +38,12 @@ app.set('io', io);
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow frontend to access backend
+  origin: [
+    "http://localhost:3000",
+    "https://eventbooking-one.vercel.app",
+    "https://eventbooking-a8j5fzmmk-deborah-rutagengwas-projects.vercel.app"
+  ],
+  methods: ["GET", "POST", "PATCH", "DELETE"],
   credentials: true
 }));
 app.use(express.json());
