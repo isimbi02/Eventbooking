@@ -9,11 +9,15 @@ const options = {
       description: 'API documentation for the Event Booking System with JWT Authentication',
     },
     servers: [
-      {
-        url: 'https://eventbooking-backend-y5kn.onrender.com/',
-        description: 'Development server',
-      },
-    ],
+  {
+    url: 'http://localhost:5000',
+    description: 'Development server',
+  },
+  {
+    url: 'https://eventbooking-backend-y5kn.onrender.com',
+    description: 'Production server',
+  },
+],
     components: {
       securitySchemes: {
         bearerAuth: {
