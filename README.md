@@ -35,30 +35,7 @@ A full-stack web application for managing and booking events, built with React.j
 - **Socket.IO** - Real-time communication
 - **Swagger** - API documentation
 
-## 📁 Project Structure
 
-```
-event-booking-system/
-├── frontend/                 # React frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/      # Reusable components
-│   │   ├── contexts/        # React contexts (AuthContext)
-│   │   ├── pages/           # Page components
-│   │   ├── utils/           # Utility functions (api.js)
-│   │   └── App.js
-│   ├── package.json
-│   └── .env.local
-├── backend/                 # Node.js backend
-│   ├── src/
-│   │   ├── routes/          # API routes
-│   │   ├── middleware/      # Custom middleware
-│   │   └── app.js          # Main server file
-│   ├── prisma/             # Database schema and migrations
-│   ├── package.json
-│   └── .env
-└── README.md
-```
 
 ## 🚦 Getting Started
 
@@ -93,7 +70,7 @@ cp .env.example .env
 
 ```env
 # Database
-DATABASE_URL="postgresql://username:passwor@localhost:5433/eventbooking"
+DATABASE_URL="postgresql://username:password@localhost:5433/eventbooking"
 
 # JWT Secret
 JWT_SECRET="your-super-secret-jwt-key"
@@ -288,7 +265,7 @@ REACT_APP_API_URL=http://localhost:5000
 
 - React.js team for the amazing framework
 - Prisma team for the excellent ORM
-- All contributors and supporters
+  
 
 ---
 
